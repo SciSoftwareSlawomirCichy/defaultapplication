@@ -1,23 +1,38 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+          version="3.0">
+	     
+	<display-name>Default Web Application</display-name>
+	<description>Default Web Application</description>
 
-<web-app>
-	<display-name>Archetype Created Web Application</display-name>
+	<servlet>
+		<display-name>moduleDb-3.0</display-name>
+		<servlet-name>moduleDb-3.0</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<multipart-config>
+			<max-file-size>157286400</max-file-size>
+			<max-request-size>41943040</max-request-size>
+			<file-size-threshold>5242880</file-size-threshold>
+		</multipart-config>
+    </servlet>
+
+	<servlet-mapping>
+		<servlet-name>moduleDb-3.0</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 
 	<!-- Autoryzacja dostępu -->
 	<security-constraint>
 		<web-resource-collection>
-			<web-resource-name>Dostęp do domyślnej aplikacji</web-resource-name>
+			<web-resource-name>Access to default application services</web-resource-name>
 			<url-pattern>/*</url-pattern>
 			<http-method>GET</http-method>
 			<http-method>POST</http-method>
@@ -36,8 +51,10 @@
 		<auth-method>BASIC</auth-method>
 		<realm-name>UserData</realm-name>
 	</login-config>
+	
 	<security-role>
+		<description>Default user role</description> 
 		<role-name>default-user</role-name>
 	</security-role>
-
+	
 </web-app>
