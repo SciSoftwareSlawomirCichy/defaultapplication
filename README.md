@@ -1,13 +1,12 @@
 # defaultapplication
 
-Przykładowa Aplikacja Web "Hello World". 
+Przykładowa Aplikacja Web "Hello World". Aplikacja pozwala na weryfikację nazwy zalogowanego użytkownika - jest ona prezentowana na stronie głównej. 
 
-Aplikacja pozwala na weryfikację nazwy zalogowanego użytkownika - jest ona prezentowana na stronie głównej. 
+## Wykorzystanie w konfiguracji adaptera OIDRCP
 
-Strona `/default/pages/index.jsp` może być wykorzystana w konfiguracji adaptera OIDRCP (interseptora) do weryfikacji 
-nazwy gdy jest ustawione SSO z tokenem Ltpa. 
-Poniżej przykład kodu adaptera, w którym referencja `this.chcekUserNameByLtpaTokenURL` przechowuje pełną ścieżkę do tej strony:
+Strona `/default/pages/index.jsp` może być wykorzystana w konfiguracji adaptera OIDRCP (interseptora) do weryfikacji nazwy gdy jest ustawione SSO z tokenem Ltpa. 
 
+Zobacz projekt [websphere-oidcrp-adapter🔒](https://github.com/SciSoftwareSlawomirCichy/websphere-oidcrp-adapter). Poniżej przykład kodu adaptera, w którym referencja `this.chcekUserNameByLtpaTokenURL` przechowuje pełną ścieżkę do strony składowanej w aplikacji:
 
 ```java
 String ltpaCookie = RelyingPartyUtils.getCookieValue(req, "LtpaToken2");
@@ -33,4 +32,13 @@ if (ltpaCookie != null && this.chcekUserNameByLtpaTokenURL != null) {
 }
 ```
 
+## Wykorzystanie jako serwer plików
 
+Aplikacja ma zaimplementowany mechanizm serwowania plików statycznych. Domyślnie pliki składowane są w katalogu głównym o nazwie `/opt/workspace/static-files/` co odpowiada kontekstowi aplikacji `/default/files/downloadFile`. Można robić podkatalogi, ale **tylko jednego poziomu zagnieżdżenia** według zasady: `<lokalizacja_katalogu_głownego>/<podkatalog>`. Przykłądowo dla domyślnej lokalizacji katalogu gółwnego i podkatalogu o nazwie `officeItems` pliki skłądowane będą w lokalizacji `/opt/workspace/static-files/officeItems` co odpowiada kontekstowi aplikacji: `/default/files/downloadFile/officeItems`.
+
+> [!Note]
+> Lokalizację katalogu gównego można zmienić za opmocą parametru JVM `sci.static.file.dir` urucjamianej maszyny wirtulanej np. `-Dsci.static.file.dir=/opt/workspace/custom-dir`.
+
+> [!Important]
+> Dostep do plików po http (https) nie jest chroniony mechanizmami uwierzytelniającymi.
+ 
