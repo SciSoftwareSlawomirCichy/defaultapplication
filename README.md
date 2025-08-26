@@ -2,6 +2,13 @@
 
 Przykładowa Aplikacja Web "Hello World". Aplikacja pozwala na weryfikację nazwy zalogowanego użytkownika - jest ona prezentowana na stronie głównej. 
 
+Dostęp do uruchomionej aplikacji:
+
+```text
+[http|https]://<server_name>:<port>/default/
+```
+Przykład: https://bpmbaw21test.hgdb.org:9443/default/
+
 ## Wykorzystanie w konfiguracji adaptera OIDRCP
 
 Strona `/default/pages/index.jsp` może być wykorzystana w konfiguracji adaptera OIDRCP (interseptora) do weryfikacji nazwy gdy jest ustawione SSO z tokenem Ltpa. 
