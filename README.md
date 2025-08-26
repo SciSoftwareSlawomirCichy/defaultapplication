@@ -41,10 +41,10 @@ if (ltpaCookie != null && this.chcekUserNameByLtpaTokenURL != null) {
 
 ## Wykorzystanie jako serwer plików
 
-Aplikacja ma zaimplementowany mechanizm serwowania plików statycznych. Domyślnie pliki składowane są w katalogu głównym o nazwie `/opt/workspace/static-files/` co odpowiada kontekstowi aplikacji `/default/files/downloadFile`. Można robić podkatalogi, ale **tylko jednego poziomu zagnieżdżenia** według zasady: `<lokalizacja_katalogu_głownego>/<podkatalog>`. Przykłądowo dla domyślnej lokalizacji katalogu gółwnego i podkatalogu o nazwie `officeItems` pliki skłądowane będą w lokalizacji `/opt/workspace/static-files/officeItems` co odpowiada kontekstowi aplikacji: `/default/files/downloadFile/officeItems`.
+Aplikacja ma zaimplementowany mechanizm serwowania plików statycznych. Domyślnie pliki składowane są w katalogu głównym o nazwie `/opt/workspace/static-files/` co odpowiada kontekstowi aplikacji `/default/files/downloadFile`. Można robić podkatalogi, ale **tylko jednego poziomu zagnieżdżenia** według zasady: `<lokalizacja_katalogu_głownego>/<podkatalog>`. Przykładowo dla domyślnej lokalizacji katalogu gółwnego i podkatalogu o nazwie `officeItems` pliki składowane będą w lokalizacji `/opt/workspace/static-files/officeItems` co odpowiada kontekstowi aplikacji: `/default/files/downloadFile/officeItems`.
 
 > [!Note]
-> Lokalizację katalogu gównego można zmienić za opmocą parametru JVM `sci.static.file.dir` urucjamianej maszyny wirtulanej np. `-Dsci.static.file.dir=/opt/workspace/custom-dir`.
+> Lokalizację katalogu głównego można zmienić za pomocą parametru JVM `sci.static.file.dir` uruchamianej maszyny wirtulanej np. `-Dsci.static.file.dir=/opt/workspace/custom-dir`.
 
 > [!Important]
 > Dostep do plików po http (https) nie jest chroniony mechanizmami uwierzytelniającymi.
