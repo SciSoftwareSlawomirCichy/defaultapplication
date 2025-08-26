@@ -11,9 +11,11 @@ Przykład: https://bpmbaw21test.hgdb.org:9443/default/
 
 ## Wykorzystanie w konfiguracji adaptera OIDRCP
 
-Strona `/default/pages/index.jsp` może być wykorzystana w konfiguracji adaptera OIDRCP (interseptora) do weryfikacji nazwy gdy jest ustawione SSO z tokenem Ltpa. 
+Strona `/default/pages/username.jsp` może być wykorzystana w konfiguracji adaptera [Websphere-oidrcp-adapter (Luna)](https://scisoftware.pl/pl/docs/Products/Websphere-oidrcp-adapter_Luna) (interseptora) do weryfikacji nazwy gdy jest ustawione SSO z tokenem Ltpa. Zobacz projekt [websphere-oidcrp-adapter🔒](https://github.com/SciSoftwareSlawomirCichy/websphere-oidcrp-adapter). 
 
-Zobacz projekt [websphere-oidcrp-adapter🔒](https://github.com/SciSoftwareSlawomirCichy/websphere-oidcrp-adapter). Poniżej przykład kodu adaptera, w którym referencja `this.chcekUserNameByLtpaTokenURL` przechowuje pełną ścieżkę do strony składowanej w aplikacji:
+![OIDRCP_adapter_config.png](https://github.com/SciSoftwareSlawomirCichy/defaultapplication/blob/master/samples/OIDRCP_adapter_config.png?raw=true)
+
+Poniżej przykład kodu adaptera, w którym referencja `this.chcekUserNameByLtpaTokenURL` przechowuje pełną ścieżkę do strony składowanej w aplikacji:
 
 ```java
 String ltpaCookie = RelyingPartyUtils.getCookieValue(req, "LtpaToken2");
