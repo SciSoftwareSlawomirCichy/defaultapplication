@@ -25,6 +25,20 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>pl.scisoftware.defaultapplication.filters.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<servlet-name>moduleDb-3.0</servlet-name>
+	</filter-mapping>
+
 	<welcome-file-list>
 		<welcome-file>pages/index.jsp</welcome-file>
 	</welcome-file-list>

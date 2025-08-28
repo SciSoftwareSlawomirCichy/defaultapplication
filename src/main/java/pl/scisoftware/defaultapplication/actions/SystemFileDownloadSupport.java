@@ -6,14 +6,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.FileCopyUtils;
+
+import pl.scisoftware.defaultapplication.utils.TraceUtils;
 
 public abstract class SystemFileDownloadSupport {
 
@@ -33,7 +35,9 @@ public abstract class SystemFileDownloadSupport {
 			+ "/{subdir}/{name}.{ext}";
 	public static final String DOWNLOAD_SYSTEM_FILE_SERVICE = "/" + DOWNLOAD_SYSTEM_FILE_SERVICE_CTX + "/{name}.{ext}";
 
-	protected Logger logger = LoggerFactory.getLogger(getClass());
+	private static final String DISPLAY_CLASSNAME = TraceUtils.createDisplayClazzName(SystemFileDownloadSupport.class);
+	private static final Logger trcLogger = TraceUtils
+			.createTraceLogger("actions." + SystemFileDownloadSupport.class.getSimpleName());
 
 	protected void downloadSystem(String subdir, String name, String ext, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
@@ -57,14 +61,19 @@ public abstract class SystemFileDownloadSupport {
 	protected void downloadFile(String name, String ext, HttpServletRequest request, HttpServletResponse response,
 			String targetDir) throws IOException {
 		final String METHOD_NAME = DOWNLOAD_SYSTEM_FILE_SERVICE_CTX;
+		if (trcLogger.isLoggable(Level.FINE)) {
+			trcLogger.entering(DISPLAY_CLASSNAME, METHOD_NAME);
+		}
+
 		String baseFileName = String.format("%s.%s", name, ext);
 		String mimeType = URLConnection.guessContentTypeFromName(baseFileName);
 		if (mimeType == null) {
 			mimeType = "application/octet-stream";
 		}
 
-		if (logger.isDebugEnabled())
-			logger.debug("--> {}: mimetype: {} ", METHOD_NAME, mimeType);
+		if (trcLogger.isLoggable(Level.FINE)) {
+			trcLogger.logp(Level.FINE, DISPLAY_CLASSNAME, METHOD_NAME, String.format("--> mimetype: %s", mimeType));
+		}
 
 		response.setContentType(mimeType);
 		/*
@@ -77,23 +86,32 @@ public abstract class SystemFileDownloadSupport {
 
 		File dir = new File(targetDir);
 		if (!dir.exists()) {
-			logger.warn("--> {}: Dir '{}' not exists!", METHOD_NAME, targetDir);
+			trcLogger.logp(Level.WARNING, DISPLAY_CLASSNAME, METHOD_NAME,
+					String.format("--> Dir '%s' not exists.", targetDir));
+			response.setStatus(404);
 			return;
 		}
 		String serverFileName = dir.getAbsolutePath() + File.separator + baseFileName;
 		File serverFile = new File(serverFileName);
 		if (!serverFile.exists()) {
-			logger.warn("--> {}: File '{}' not exists!", METHOD_NAME, serverFileName);
+			trcLogger.logp(Level.WARNING, DISPLAY_CLASSNAME, METHOD_NAME,
+					String.format("--> File '%s' not exists.", serverFileName));
+			response.setStatus(404);
 			return;
 		}
 		int fileSize = (int) serverFile.length();
 		response.setContentLength(fileSize);
 
-		if (logger.isDebugEnabled())
-			logger.debug("--> {}: serverFileName: {}, size: {}", METHOD_NAME, serverFileName, fileSize);
+		if (trcLogger.isLoggable(Level.FINE)) {
+			trcLogger.logp(Level.FINE, DISPLAY_CLASSNAME, METHOD_NAME,
+					String.format("--> serverFileName: %s, size: %d", serverFileName, fileSize));
+		}
 
 		try (InputStream inputStream = new BufferedInputStream(new FileInputStream(serverFile));) {
 			FileCopyUtils.copy(inputStream, response.getOutputStream());
+		}
+		if (trcLogger.isLoggable(Level.FINE)) {
+			trcLogger.exiting(DISPLAY_CLASSNAME, METHOD_NAME);
 		}
 	}
 
